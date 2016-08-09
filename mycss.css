@@ -1,4 +1,4 @@
-.emailBlobButton {
+.btn-primary {
   background-color: rgb(69, 111, 119);
   color: #fff;
   font-family: Sans-serif;
@@ -10,17 +10,11 @@
   text-align: center;
   border: 0;
   transition: all 0.3s ease 0s;
-}
-
-button {
   opacity: 1;
 }
 
-button:hover {
+
+.btn-primary :hover {
   opacity: 0.75;
   background-color: rgb(19, 236, 246);
 }
-
-
-/*div class="T-I J-J5-Ji T-I-KE L3" role="button" tabindex="0" gh="cm" style="-webkit-user-select: none;">ANALYZE</div>'*/
-/*<div role="button" class="T-I J-J5-Ji aoO T-I-atl L3 emailBlob ANALYZE">ANALYZE</div>*/

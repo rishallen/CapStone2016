@@ -10,22 +10,20 @@ function refresh(f) {
 }
 
 
-var main = function(){
+var main = function() {
   // NOTE: Always use the latest version of gmail.js from
   // https://github.com/KartikTalwar/gmail.js
   gmail = new Gmail();
-  // console.log('Hello,', gmail.get.user_email());
 };
 
 
-
-//Returns the html element (button) of the first composed email
+//Returns the html element (button) of the last composed email
 var make_button = function(compose, type) {
   gmail = new Gmail();
-  console.log('api.dom.compose object:', compose, 'type is:', type );  // gmail.dom.compose object
-  var compose_ref = gmail.dom.composes()[0]; // is this line the problem
-  gmail.tools.add_compose_button(compose_ref, '<div class="T-I J-J5-Ji T-I-KE L3" role="button" tabindex="0" gh="cm" style="-webkit-user-select: none;">ANALYZE</div>', function() {
-  }, 'Custom Style Classes');
+  var compose_ref = gmail.dom.composes();
+  gmail.tools.add_compose_button(compose_ref[compose_ref.length - 1], 'Analyze', function() {
+    alert('you have invaded me');
+  }, 'emailBlobButton' ); // using the "class"
 };
 
 
@@ -36,7 +34,7 @@ $( document ).ready(function() {
     gmail.observe.on(
       "compose", make_button
     );
-      console.log( "ready!" );
+      console.log( 'ready!' );
 });
 
 // refresh(main);

@@ -1,0 +1,26 @@
+.emailBlobButton {
+  background-color: rgb(69, 111, 119);
+  color: #fff;
+  font-family: Sans-serif;
+  font-size: 20px;
+  height: 60px;
+  width: 150px;
+  line-height: 60px;
+  margin: 25px 25px;
+  text-align: center;
+  border: 0;
+  transition: all 0.3s ease 0s;
+}
+
+button {
+  opacity: 1;
+}
+
+button:hover {
+  opacity: 0.75;
+  background-color: rgb(19, 236, 246);
+}
+
+
+/*div class="T-I J-J5-Ji T-I-KE L3" role="button" tabindex="0" gh="cm" style="-webkit-user-select: none;">ANALYZE</div>'*/
+/*<div role="button" class="T-I J-J5-Ji aoO T-I-atl L3 emailBlob ANALYZE">ANALYZE</div>*/

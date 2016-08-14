@@ -18,6 +18,24 @@ $( document ).ready(function() {
     return email_blob.threads[email_id].content_plain; // this needs be sent to api
   };
 
+  var click_handler = function(event) {
+    console.log('click!', event);
+
+    // step1: get the compose text body
+    var email_id = gmail.get.compose_ids()[0];
+    var email_blob = gmail.get.email_data(email_id);
+    var email_content = email_blob.threads[email_id].content_plain; // this needs be sent to api
+    console.log(email_content);
+
+    // tone1 = file, tone2 = the variable, analysis
+    console.log(tone.analysis());//email content go in as a variable which is a function
+
+    //step 2: send it to the api
+
+    // show the results to the user (somehow)
+
+  };
+
   //Returns the html element (button) of the last composed email
   var make_button = function(compose, type) {
     gmail = new Gmail();

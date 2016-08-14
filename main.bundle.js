@@ -45,7 +45,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(console) {// var tone = require('./tone.js');
-	// var ladybug = require('./ladybug.png');
 
 	//Executes when the Document Object Model (DOM) is ready for JavaScript code
 	$( document ).ready(function() {
@@ -72,9 +71,7 @@
 	    var email_blob = gmail.get.email_data(email_id);
 	    var email_content = email_blob.threads[email_id].content_plain; // this needs be sent to api
 	    console.log(email_content);
-
-	    // tone1 = file, tone2 = the variable, analysis
-	    console.log(tone.analysis());//email content go in as a variable which is a function
+	    // console.log(tone.analysis());//email content go in as a variable which is a function
 
 	    //step 2: send it to the api
 

@@ -1,20 +1,29 @@
-.btn-primary {
-  background-color: rgb(69, 111, 119);
-  color: #fff;
-  font-family: Sans-serif;
-  font-size: 20px;
-  height: 60px;
-  width: 150px;
-  line-height: 60px;
-  margin: 25px 25px;
-  text-align: center;
-  border: 0;
-  transition: all 0.3s ease 0s;
-  opacity: 1;
+
+* {
+  box-sizing: border-box;
+}
+
+.test_this {
+    background: linear-gradient(red, yellow, purple); /* Green */
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 50px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    cursor: pointer;
 }
 
 
-.btn-primary :hover {
-  opacity: 0.75;
-  background-color: rgb(19, 236, 246);
+.test_this:hover {
+  border: solid 1px rgba(69, 111, 119, .5);
+  color: grey;
+}
+
+.test {
+  font-size: 25px;
 }

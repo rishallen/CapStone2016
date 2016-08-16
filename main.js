@@ -42,7 +42,7 @@ $( document ).ready(function() {
   var make_button = function(compose, type) {
     gmail = new Gmail();
     gmail.tools.add_compose_button(
-    compose,'<span class="glyphicon glyphicon-random">', click_handler, 'test_this' ); // using the "class"
+    compose,'•', click_handler, 'test_this' ); // using the "class"
   };
 
 

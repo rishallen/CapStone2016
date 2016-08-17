@@ -24,12 +24,10 @@ $( document ).ready(function() {
     // step1: get the compose text body
     var email_id = gmail.get.compose_ids()[0];
     var email_blob = gmail.get.email_data(email_id);
-    var email_text = email_blob.threads[email_id].content_plain; // this needs be sent to api
+    var email_content = email_blob.threads[email_id].content_plain; // this needs be sent to api
 
-    var emailContent = email_text;
-    console.log(emailContent);
+    console.log(email_content);
 
-    // emotion1 = file, emotion2 = the variable, analysis
     console.log(tone.analysis());//email content go in as a variable which is a function
 
     //step 2: send it to the api

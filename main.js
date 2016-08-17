@@ -30,7 +30,14 @@ $( document ).ready(function() {
 
     console.log(tone.analysis());//email content go in as a variable which is a function
 
-    //step 2: send it to the api
+    //step 2: send it to my app
+    $.post("https://localhost:8080/analyze",
+    {
+        text: email_content
+    },
+    function(data, status){
+         alert("Data: " + data + "\nStatus: " + status);
+    });
 
     // show the results to the user (somehow)
 

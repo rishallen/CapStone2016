@@ -13,7 +13,7 @@
   "web_accessible_resources": [
     "jquery-1.12.4.js",
     "gmail.js",
-    "main.bundle.js"
+    "main.bundle.js",
     "sentiment.js"
   ],
   "permissions": [

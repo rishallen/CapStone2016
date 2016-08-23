@@ -9,7 +9,7 @@ $( document ).ready(function() {
 
 
   // cleans up api response
-  var reportMaker = function(data, status){
+  var reportMaker = function(data, status, compose){
     var report = "";
     for (var item in data) {
          //console.log(data[item]);
@@ -26,8 +26,8 @@ $( document ).ready(function() {
             //  var scores = (tone.score); // print
             report += tone.tone_name; // print
             report += tone.score;  // print
-              // console.log(tone.tone_name);
-              // console.log(tone.score);
+            // console.log(tone.tone_name);
+            // console.log(tone.score);
           }
         }
       }
@@ -35,41 +35,47 @@ $( document ).ready(function() {
 
     // returns a string that is what we want the user to see
     // console.log(report);
+    var email_content = compose.body();
+    compose.body(email_content + report);
     // returns a single string built with concantenation that I want the user to see:
-    return report;
   };
 
-  var click_handler = function(event) {
-    console.log(event);
+  var create_handler_for = function(compose) { //create a function called click handler,
+    // this function makes a function called click_handler
+    var click_handler = function(event) {
+      console.log(event);
 
-    // step 1: get the compose text body
-    var email_id = gmail.get.compose_ids()[gmail.get.compose_ids().length - 1];
-    console.log(email_id);
-    var email_blob = gmail.get.email_data(email_id);
-    var email_content = email_blob.threads[email_id].content_plain; // this needs be sent to api
-    // console.log(email_content);
+      // var composeWindow = compose;
+      // step 1: get the compose text body
+      // looks for all the divs with a class AD
+      // var email_id = gmail.get.compose_ids()[gmail.get.compose_ids().length - 1];
+        // console.log(email_id);
+      // var email_blob = gmail.get.email_data(email_id);
+      // var email_content = email_blob.threads[email_id].content_plain; // this needs be sent to api
+      // console.log(email_content);
 
-    //step 2: send it to my app
-    var report = $.post("https://localhost:8080/analyze",
-    { text: email_content }, reportMaker);
-
-  };
+      // console.log(email_content);
 
 
-    // step 3: get/set the email body
-    var body = function(body) {
-      var el = this.dom('body');
-      if(body) el.html(body + report);
-      console.log('that is this', body + report);
-      return el.html();
+      // step 3: get/set the email body
+      var email_content = compose.body();
+
+      //step 2: send it to my app
+      $.post("https://localhost:8080/analyze",
+      // wrapped the reportMaker that takes data and status so that it could also pass through compose 
+      { text: email_content }, function(data, status) { reportMaker(data, status, compose );
+        }); // calling reportMaker
+
+
+
+
+      // compose.body();
+      // console.log(email_text);
+
+
     };
-
-  // step3: print on the email body
-  // currently not working
-  // gmail = new Gmail();
-  // var email_text = compose.body();
-  // console.log(email_text + report);
-
+    return click_handler;
+  };
 
   // step4: click function that removes analysis
 
@@ -77,12 +83,14 @@ $( document ).ready(function() {
 
   //Returns the html element (button) of the last composed email
   var make_button = function(compose, type) {
-    // gmail = new Gmail();
+    // Make a custom click_handler function for the window
+    // that is stored in the "compose" variable
+    var handler = create_handler_for(compose);
     gmail.tools.add_compose_button(
-    compose,'•', click_handler, 'test_this' ); // using the "class"
+    compose,'•', handler, 'test_this' ); // using the "class"
   };
 
-  // instantiates a new compose email
+  // when a new compose window opens, make a button on it
   gmail = new Gmail();
     gmail.observe.on(
       "compose", make_button

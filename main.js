@@ -3,7 +3,7 @@ var $ = require('./jquery-1.12.4.js');
 
 
 //Executes when the Document Object Model (DOM) is ready for JavaScript code
-$( document ).ready(function(compose) {
+$( document ).ready(function() {
   var gmail;
 
   var main = function() {
@@ -12,18 +12,20 @@ $( document ).ready(function(compose) {
 
 
   //Returns the text of the first opened composed email:
-  var returns_text = function(){
-    gmail = new Gmail(); // instantiate
-    var email_id = gmail.get.compose_ids()[0];
-    var email_blob = gmail.get.email_data(email_id);
-    return email_blob.threads[email_id].content_plain; // this needs be sent to api
-  };
+  // var returns_text = function(){
+  //   gmail = new Gmail(); // instantiate
+  //   var email_id = gmail.get.compose_ids()[0];
+  //   var email_blob = gmail.get.email_data(email_id);
+  //   return email_blob.threads[email_id].content_plain; // this needs be sent to api
+  // };
 
-  var click_handler = function(em) {
-    console.log('click!', event);
+  var click_handler = function(event) {
+    // console.log('click!', event);
+    console.log(event);
 
     // step1: get the compose text body
-    var email_id = gmail.get.compose_ids()[0];
+    var email_id = gmail.get.compose_ids()[gmail.get.compose_ids().length - 1];
+    console.log(email_id);
     var email_blob = gmail.get.email_data(email_id);
     var email_content = email_blob.threads[email_id].content_plain; // this needs be sent to api
 
@@ -33,16 +35,17 @@ $( document ).ready(function(compose) {
     // console.log(tone.analysis());//email content go in as a variable which is a function
 
     //step 2: send it to my app
-    $.post("https://localhost:8080/analyze",
+    var tones = $.post("https://localhost:8080/analyze",
     {
         text: email_content
     },
+
     function(data, status){
         //  alert("Data: " + data + "\nStatus: " + status);
       var tone = data;
         for (var item in tone) {
           for (var subItem in tone[item]) {
-    	 tones = (tone[item][subItem][0].category_name);
+    	    console.log(tone[item][subItem][0].category_name);
     	    console.log(tone[item][subItem][0].tones[0].tone_name);
           console.log(tone[item][subItem][0].tones[0].score);
           console.log(tone[item][subItem][0].tones[1].tone_name);
@@ -71,13 +74,15 @@ $( document ).ready(function(compose) {
           console.log(tone[item][subItem][2].tones[3].score);
           console.log(tone[item][subItem][2].tones[4].tone_name);
           console.log(tone[item][subItem][2].tones[4].score);
-          // step 3: email body + the json response from API
-            var email_text = compose.body();
-            compose.body(email_text + tones);
-          }
+
         }
-
-
+      }
+      // step 3: email body + the json response from API
+      // function setItemBody() {
+      //   gmail = new Gmail();
+        // var email_text = compose.body();
+        // console.log(email_text + tones);
+      // }
 
     });
   };

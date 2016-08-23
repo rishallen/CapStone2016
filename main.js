@@ -41,42 +41,23 @@ $( document ).ready(function() {
     },
 
     function(data, status){
-        //  alert("Data: " + data + "\nStatus: " + status);
-      var tone = data;
-        for (var item in tone) {
-          for (var subItem in tone[item]) {
-    	    console.log(tone[item][subItem][0].category_name);
-    	    console.log(tone[item][subItem][0].tones[0].tone_name);
-          console.log(tone[item][subItem][0].tones[0].score);
-          console.log(tone[item][subItem][0].tones[1].tone_name);
-          console.log(tone[item][subItem][0].tones[1].score);
-          console.log(tone[item][subItem][0].tones[2].tone_name);
-          console.log(tone[item][subItem][0].tones[2].score);
-          console.log(tone[item][subItem][0].tones[3].tone_name);
-          console.log(tone[item][subItem][0].tones[3].score);
-          console.log(tone[item][subItem][0].tones[4].tone_name);
-          console.log(tone[item][subItem][0].tones[4].score);
-    	    console.log(tone[item][subItem][1].category_name);
-    	    console.log(tone[item][subItem][1].tones[0].tone_name);
-          console.log(tone[item][subItem][1].tones[0].score);
-          console.log(tone[item][subItem][1].tones[1].tone_name);
-          console.log(tone[item][subItem][1].tones[1].score);
-          console.log(tone[item][subItem][1].tones[2].tone_name);
-          console.log(tone[item][subItem][1].tones[2].score);
-    	    console.log(tone[item][subItem][2].category_name);
-    	    console.log(tone[item][subItem][2].tones[0].tone_name);
-          console.log(tone[item][subItem][2].tones[0].score);
-          console.log(tone[item][subItem][2].tones[1].tone_name);
-          console.log(tone[item][subItem][2].tones[1].score);
-          console.log(tone[item][subItem][2].tones[2].tone_name);
-          console.log(tone[item][subItem][2].tones[2].score);
-          console.log(tone[item][subItem][2].tones[3].tone_name);
-          console.log(tone[item][subItem][2].tones[3].score);
-          console.log(tone[item][subItem][2].tones[4].tone_name);
-          console.log(tone[item][subItem][2].tones[4].score);
-
-        }
-      }
+        //  alert("Data: " + data + "\nStatus: " + status)
+        for (var item in data) {
+           //console.log(data[item]);
+           for (var subItem in data[item]) {
+             var categories = data[item][subItem];
+             for  (var i = 0; i < categories.length; i++) {
+               var category = categories[i];
+               console.log(category.category_name);
+             // 	var categoryName = (category.category_name); // this will be printed to the screen
+               for (var j = 0; j < category.tones.length; j++) {
+                var tone = category.tones[j];
+       	        console.log(tone.tone_name); // have a single string that I build with concantenation 
+                console.log(tone.score);
+               }
+           }
+         }
+       }
       // step 3: email body + the json response from API
       // function setItemBody() {
       //   gmail = new Gmail();

@@ -11,14 +11,6 @@ $( document ).ready(function() {
   };
 
 
-  //Returns the text of the first opened composed email:
-  // var returns_text = function(){
-  //   gmail = new Gmail(); // instantiate
-  //   var email_id = gmail.get.compose_ids()[0];
-  //   var email_blob = gmail.get.email_data(email_id);
-  //   return email_blob.threads[email_id].content_plain; // this needs be sent to api
-  // };
-
   var click_handler = function(event) {
     // console.log('click!', event);
     console.log(event);
@@ -42,22 +34,22 @@ $( document ).ready(function() {
 
     function(data, status){
         //  alert("Data: " + data + "\nStatus: " + status)
-        for (var item in data) {
+      for (var item in data) {
            //console.log(data[item]);
-           for (var subItem in data[item]) {
-             var categories = data[item][subItem];
-             for  (var i = 0; i < categories.length; i++) {
-               var category = categories[i];
-               console.log(category.category_name);
+        for (var subItem in data[item]) {
+        var categories = data[item][subItem];
+          for  (var i = 0; i < categories.length; i++) {
+          var category = categories[i];
+            console.log(category.category_name);
              // 	var categoryName = (category.category_name); // this will be printed to the screen
-               for (var j = 0; j < category.tones.length; j++) {
-                var tone = category.tones[j];
-       	        console.log(tone.tone_name); // have a single string that I build with concantenation 
-                console.log(tone.score);
-               }
-           }
-         }
-       }
+            for (var j = 0; j < category.tones.length; j++) {
+            var tone = category.tones[j];
+       	      console.log(tone.tone_name); // have a single string that I build with concantenation
+              console.log(tone.score);
+            }
+          }
+        }
+      }
       // step 3: email body + the json response from API
       // function setItemBody() {
       //   gmail = new Gmail();

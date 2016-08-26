@@ -4,6 +4,7 @@
   "description": "NLP Chrome extension ",
   "main": "main.bundle.js",
   "dependencies": {
+    "c3": "^0.4.11",
     "d3": "^4.2.2",
     "fs": "0.0.2",
     "json-loader": "^0.5.4",

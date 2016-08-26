@@ -20,7 +20,8 @@ module.exports = {
  },
  plugins: [
    new webpack.ProvidePlugin({
-      d3: 'd3'
+      d3: 'd3',
+      c3: 'c3'
   })
  ]
 };

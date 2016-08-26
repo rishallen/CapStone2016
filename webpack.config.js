@@ -1,3 +1,4 @@
+var webpack = require('webpack');
 module.exports = {
   module: {
       noParse: /node_modules\/json-schema\/lib\/validate\.js/,
@@ -13,8 +14,13 @@ module.exports = {
   },
   entry:
     "./main.js",
-    
+
  output: {
    filename: "main.bundle.js"
- }
+ },
+ plugins: [
+   new webpack.ProvidePlugin({
+      d3: 'd3'
+  })
+ ]
 };

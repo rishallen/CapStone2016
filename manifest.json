@@ -14,8 +14,7 @@
     "jquery-1.12.4.js",
     "gmail.js",
     "main.bundle.js",
-    "sentiment.js",
-    "https://d3js.org/d3.v4.min.js"
+    "sentiment.js"
   ],
   "permissions": [
   "http://www.google.com/",

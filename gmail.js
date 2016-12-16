@@ -1418,7 +1418,11 @@ var Gmail_ = function(localJQuery) {
 
     // loop through each of the inserted elements classes & check for a defined observer on that class
     var cn = target.className || '';
-    var classes = cn.trim().split(/\s+/);
+    if (typeof(cn) !== "string") {
+      var classes = [];
+    } else {
+      var classes = cn.trim().split(/\s+/);
+    }
     if(!classes.length) classes.push(''); // if no class, then check for anything observing nodes with no class
     $.each(classes, function(idx, className) {
       var observer = dom_observer_map[className];

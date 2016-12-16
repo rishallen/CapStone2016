@@ -1,7 +1,21 @@
 {
+  "manifest_version": 2,
   "name": "Risha's NLP Chrome Extension",
   "version": "0.1",
   "description": "Natural Language Processor Gmail chrome extension",
+
+  "browser_action": {
+  "default_icon": "tonalyze_logo2.png",
+   "default_title": "Google Mail",
+  "default_popup": "popup.html"
+  },
+
+  "icons": {
+    "16": "tonalyze_logo2.png",
+    "48": "tonalyze_logo2.png",
+    "128": "tonalyze_logo2.png"
+  },
+
   "content_scripts": [
     {
       "matches": ["https://mail.google.com/*"],
@@ -10,15 +24,19 @@
       "html": ["index.html"]
     }
   ],
+
+
   "web_accessible_resources": [
     "jquery-1.12.4.js",
     "gmail.js",
     "main.bundle.js",
     "sentiment.js"
   ],
+
   "permissions": [
+  "activeTab",
   "http://www.google.com/",
+  "https://ajax.googleapis.com/",
   "https://gateway.watsonplatform.net/tone-analyzer/*"
-  ],
-  "manifest_version": 2
+  ]
 }

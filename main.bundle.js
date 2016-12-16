@@ -51,263 +51,246 @@
 	'use strict';
 
 
-
 	//Executes when the Document Object Model (DOM) is ready for JavaScript code
 	$( document ).ready(function() {
+
 	  var gmail = new Gmail();
 
-	  // Cleans up api response
-	  var reportMaker = function(data, status, compose){
-	    var report = "";
-	    for (var item in data) {
-	      for (var subItem in data[item]) {
-	        var categories = data[item][subItem];
-	        for  (var i = 0; i < categories.length; i++) {
-	          var category = categories[i];
-	          report += category.category_name; // print
-	          for (var j = 0; j < category.tones.length; j++) {
-	            var tone = category.tones[j];
-	            report += tone.tone_name; // print
-	            // console.log(report);
-	            report += tone.score;  // print
-	          }
-	        }
-	      }
-	    }
-	  };
-
 	  var make_emotion_array_for_d3 = function(data, status, compose) {
-	    var emotion_toneA = "";
-	    var emotion_toneB = "";
-	    var emotion_toneC = "";
-	    var emotion_toneD = "";
-	    var emotion_toneE = "";
+	    var emotion_toneA  = "";
+	    var emotion_toneB  = "";
+	    var emotion_toneC  = "";
+	    var emotion_toneD  = "";
+	    var emotion_toneE  = "";
 	    var emotion_scoreA = "";
 	    var emotion_scoreB = "";
 	    var emotion_scoreC = "";
 	    var emotion_scoreD = "";
 	    var emotion_scoreE = "";
 
-	    emotion_toneA = (data.document_tone.tone_categories[0].tones[0].tone_name);
+	    emotion_toneA  = (data.document_tone.tone_categories[0].tones[0].tone_name);
 	    emotion_scoreA = (data.document_tone.tone_categories[0].tones[0].score*100);
-	    emotion_toneB = (data.document_tone.tone_categories[0].tones[1].tone_name);
+	    emotion_toneB  = (data.document_tone.tone_categories[0].tones[1].tone_name);
 	    emotion_scoreB = (data.document_tone.tone_categories[0].tones[1].score*100);
-	    emotion_toneC = (data.document_tone.tone_categories[0].tones[2].tone_name);
+	    emotion_toneC  = (data.document_tone.tone_categories[0].tones[2].tone_name);
 	    emotion_scoreC = (data.document_tone.tone_categories[0].tones[2].score*100);
-	    emotion_toneD = (data.document_tone.tone_categories[0].tones[3].tone_name);
+	    emotion_toneD  = (data.document_tone.tone_categories[0].tones[3].tone_name);
 	    emotion_scoreD = (data.document_tone.tone_categories[0].tones[3].score*100);
-	    emotion_toneE = (data.document_tone.tone_categories[0].tones[4].tone_name);
+	    emotion_toneE  = (data.document_tone.tone_categories[0].tones[4].tone_name);
 	    emotion_scoreE = (data.document_tone.tone_categories[0].tones[4].score*100);
+
 	    var emotion = [ emotion_toneA, emotion_scoreA, emotion_toneB, emotion_scoreB, emotion_toneC, emotion_scoreC, emotion_toneD, emotion_scoreD, emotion_toneE, emotion_scoreE ];
-	    var email_content = compose.body();
-	    pie_chart(d3, emotion);// Step 3: display a pie chart
-	    };
 
-	    var pie_chart = function(d3, emotion) {
-	      var dataset = [
-	        {"label":emotion[0], "value":emotion[1]},
-	        {"label":emotion[2], "value":emotion[3]},
-	        {"label":emotion[4], "value":emotion[5]},
-	        {"label":emotion[6], "value":emotion[7]},
-	        {"label":emotion[8], "value":emotion[9]}
-	      ];
+	    var myWindow;
 
+	      function openWin() {
+	          myWindow = window.open("", "myWindow", "width=200,height=100");
+	          myWindow.document.write("<p>This is 'myWindow'</p>");
+	      }
 
-	      var width = 200;
-	      var height = 200;
-	      var offset = 20;
-	      var radius = Math.min(width, height) / 2;
+	      function closeWin() {
+	          myWindow.close();
+	      }
+	    // var email_content = compose.body();
+	    // compose.body(email_content, pie_chart(d3,c3, emotion));
+	    // var myWindown = window.open("tone", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=400,height=400");
+	  };
+	  //     var myWindown = window.open("", "MsgWindow", "width=200, height=200");
+	  //       myWindown.document.getElementById("emotion_chart").innerHTML = (pie_chart(d3,c3,emotion));
+	  //
+	  // };
 
+	  var pie_chart = function(d3, c3, emotion) {
+	    var container = d3.select("div"); // container
+	    container.append("div")
+	      .text("Emotion Tone")
+	      .style("font-size", "15px")
+	      .style("margin-top", "30px")
+	      .style("margin-left", "48px")
+	      .attr("class", "tone_chart");
+	    container.append("div") //
+	      .attr("class", "tone_chart")
+	      .attr("id", "emotion_chart");
 
-	      var color = d3.scaleOrdinal()
-	        .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-
-	      var legend = d3.select(".M9")
-	        .append("svg")
-	        .attr("class", "tone_chart")
-	        .attr("width", 120)
-	        .attr("height", (dataset.length) * 20)
-	        .style("padding-left", "46px")
-	        .style("padding-bottom", "200px")
-	      .selectAll("g")
-	        .data(dataset)
-	      .enter().append("g")
-	        .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
-
-	        legend.append("rect")
-	            .attr("width", 18)
-	            .attr("height", 18)
-	            .attr('fill', function(d, i) {
-	            return color(d.label);
-	            });
-
-	        legend.append("text")
-	            .attr("x", 24)
-	            .attr("y", 9)
-	            .attr("dy", ".35em")
-	            .text(function(d) { return d.label; });
-
-	      var svg = d3.select('.M9')
-	      // outer image element
-	        .append('svg')
-	        .classed('tone_chart', true)
-	        .attr('width', width )
-	        .attr('height', height + offset)
-	        .style('margin-top', '35px')
-	        .style("margin-left", "3px");
-	        // Chart
-	        var chart = svg.append('g')
-	        .attr('transform', 'translate(' + (width / 2) +
-	          ',' + (height / 2 + offset) + ')');
-	        chart.append('g')
-	          .attr("class", "slices");
-	        chart.append('g')
-	          .attr("class", "labels");
-	          // title
-	        chart.append("text")
-	          .attr("x", 0)
-	          .attr("y", -108)
-	          .attr("class","title")
-	          .style("text-anchor", "middle")
-	          .text("Eomtion Tone");
+	    var pie = c3.generate({
+	      size: {
+	        height: 300,
+	        width: 480
+	      },
+	      data: {
+	        columns: [
+	          [emotion[0], emotion[1]],
+	          [emotion[2], emotion[3]],
+	          [emotion[4], emotion[5]],
+	          [emotion[6], emotion[7]],
+	          [emotion[8], emotion[9]]
+	        ],
+	        type : 'pie',
+	      },
+	      color: {
+	        pattern: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]
+	      },
+	      bindto: '#emotion_chart',
+	    });
+	  };
 
 
+	  //
+	  // var make_social_array_for_d3 = function(data, status, compose) {
+	  //   var social_toneA = "";
+	  //   var social_toneB = "";
+	  //   var social_toneC = "";
+	  //   var social_toneD = "";
+	  //   var social_toneE = "";
+	  //   var social_scoreA = "";
+	  //   var social_scoreB = "";
+	  //   var social_scoreC = "";
+	  //   var social_scoreD = "";
+	  //   var social_scoreE = "";
+	  //
+	  //   social_toneA = (data.document_tone.tone_categories[2].tones[0].tone_name);
+	  //   social_scoreA = (data.document_tone.tone_categories[2].tones[0].score*100);
+	  //   social_toneB = (data.document_tone.tone_categories[2].tones[1].tone_name);
+	  //   social_scoreB = (data.document_tone.tone_categories[2].tones[1].score*100);
+	  //   social_toneC = (data.document_tone.tone_categories[2].tones[2].tone_name);
+	  //   social_scoreC = (data.document_tone.tone_categories[2].tones[2].score*100);
+	  //   social_toneD = (data.document_tone.tone_categories[2].tones[3].tone_name);
+	  //   social_scoreD = (data.document_tone.tone_categories[2].tones[3].score*100);
+	  //   social_toneE = (data.document_tone.tone_categories[2].tones[4].tone_name);
+	  //   social_scoreE = (data.document_tone.tone_categories[2].tones[4].score*100);
+	  //
+	  //   var social = [ social_toneA, social_scoreA, social_toneB, social_scoreB, social_toneC, social_scoreC, social_toneD, social_scoreD, social_toneE, social_scoreE ];
+	  //
+	  //   // var email_content = compose.body();
+	  //   // compose.body(email_content, pie_chart2(d3,c3, social));
+	  //   // window.open("pie_chart2(d3,c3, social)");
+	  //   };
+	  //
+	  // var pie_chart2 = function(d3, c3, social) {
+	  //   var container = d3.select(".aoX"); // container M9
+	  //   container.append("div") // creates an h1 and returns it
+	  //     .text("Social Tone") //operating on h1 sets text and returns the h1 element
+	  //     .style("font-size", "16px")
+	  //     .style("margin-top", "30px")
+	  //     .style("margin-left", "48px")
+	  //     .attr("class", "tone_chart");
+	  //   container.append("div") //
+	  //     .attr("class", "tone_chart")
+	  //     .attr("id", "social_chart");
+	  //
+	  //     var pie = c3.generate({
+	  //     size: {
+	  //       height: 300,
+	  //       width: 480
+	  //     },
+	  //     data: {
+	  //       columns: [
+	  //         [social[0], social[1]],
+	  //         [social[2], social[3]],
+	  //         [social[4], social[5]],
+	  //         [social[6], social[7]],
+	  //         [social[8], social[9]]
+	  //       ],
+	  //       type : 'pie',
+	  //     },
+	  //     color: {
+	  //       pattern: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]
+	  //     },
+	  //     bindto: '#social_chart',
+	  //   });
+	  // };
 
+	  // var make_language_array_for_d3 = function(data, status, compose) {
+	  //   var language_toneA = "";
+	  //   var language_toneB = "";
+	  //   var language_toneC = "";
+	  //   var language_scoreA = "";
+	  //   var language_scoreB = "";
+	  //   var language_scoreC = "";
+	  //
+	  //   language_toneA = (data.document_tone.tone_categories[1].tones[0].tone_name);
+	  //   language_scoreA = (data.document_tone.tone_categories[1].tones[0].score*100);
+	  //   language_toneB = (data.document_tone.tone_categories[1].tones[1].tone_name);
+	  //   language_scoreB = (data.document_tone.tone_categories[1].tones[1].score*100);
+	  //   language_toneC = (data.document_tone.tone_categories[1].tones[2].tone_name);
+	  //   language_scoreC = (data.document_tone.tone_categories[1].tones[2].score*100);
+	  //
+	  //
+	  //   var language = [ language_toneA, language_scoreA, language_toneB, language_scoreB, language_toneC, language_scoreC];
+	  //   console.log(language_toneA);
+	  //   console.log(language_scoreA);
+	  //   var email_content = compose.body();
+	  //   compose.body(email_content, pie_chart3(d3,c3, language));
+	  //   };
+	  //
+	  //
+	  // var pie_chart3 = function(d3, c3, language) {
+	  //   console.log(language);
+	  //   var container = d3.select(".aoX"); // container
+	  //   container.append("div")
+	  //     .text("Language Tone")
+	  //     .style("margin-top", "30px")
+	  //     .style("margin-left", "48px")
+	  //     .attr("class", "tone_chart");
+	  //   container.append("div") //
+	  //     .attr("class", "tone_chart")
+	  //     .attr("id", "language_chart");
+	  //
+	  //   var pie = c3.generate({
+	  //     size: {
+	  //       height: 300,
+	  //       width: 480
+	  //     },
+	  //     data: {
+	  //       columns: [
+	  //         [language[0], language[1]],
+	  //         [language[2], language[3]],
+	  //         [language[4], language[5]],
+	  //       ],
+	  //       type : 'pie',
+	  //     },
+	  //     color: {
+	  //       pattern: ["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]
+	  //     },
+	  //     bindto: '#language_chart',
+	  //   });
+	  // };
 
-
-	      var arc = d3.arc()
-	        .innerRadius(0)
-	        .outerRadius(radius);
-
-	      var labelArc = d3.arc()
-	        .outerRadius(radius - 50)
-	        .innerRadius(radius - 50);
-
-	      var pie = d3.pie()
-	        .value(function(d) { return d.value; })
-	        .sort(null);
-
-	      var path = svg.select('.slices')
-	        .selectAll('path')
-	        .data(pie(dataset))
-	        .enter()
-	        .append('path')
-	        .attr('d', arc)
-	        .attr('fill', function(d, i) { return color(d.data.label);})
-	        .on("mouseenter", function(d) {
-	            d3.select(this)
-	               .attr("stroke","white")
-	               .transition()
-	               .duration(1000)
-	               .attr("d", arcOver)
-	               .attr("stroke-width",6);
-	         })
-	        .on("mouseleave", function(d) {
-	            d3.select(this).transition()
-	               .attr("d", arc)
-	               .attr("stroke","none");
-	        });
-
-	        /* ------- TEXT LABELS -------*/
-	        var key = function(d){ return d.data.value.toFixed() + '%'; };
-	        var text = svg.select(".labels").selectAll("text")
-	          .data(pie(dataset), key);
-
-	        text.enter()
-	          .append("text")
-	          .attr("dy", ".35em")
-	          .style("font-size", "8px")
-	          .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
-	          .text(function(d) {
-	            // put percision right between data and value
-	            return d.data.value.toFixed() + '%';
-	          });
-
-	        text.attr('fill', function(d, i) {
-	       return color(d.data.label);
-	        });
-
-
-	      };
-	      // var pie_chart = function(d3, emotion) {
-	      //   // var email_content = compose.body();
-	      //   // console.log(emotion[2]);
-	      //
-	      //   data = [
-	      //           {"label":emotion[0], "value":emotion[1]},
-	      //           {"label":emotion[2], "value":emotion[3]},
-	      //           {"label":emotion[4], "value":emotion[5]},
-	      //           {"label":emotion[6], "value":emotion[7]},
-	      //           {"label":emotion[8], "value":emotion[9]}
-	      //         ];
-	      //
-	      // var w = 300, //width
-	      //   h = 300, //height
-	      //   r = 100, //radius
-	      //
-	      //   color = d3.scaleOrdinal()
-	      //     .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-	      //
-	      //
-	      //   var vis = d3.select(".M9")
-	      //       .append("svg:svg")              //create the SVG element inside the <body>
-	      //       .classed("tone_chart", true)       // create the class that SVG will find in the <body>
-	      //       .data([data])                   //associate our data with the document
-	      //           .style("padding-top", "25px")
-	      //           .style("padding-left", "38px")
-	      //           .attr("width", w)           //set the width and height of our visualization (these will be attributes of the <svg> tag
-	      //           .attr("height", h)
-	      //       .append("svg:g")                //make a group to hold our pie chart
-	      //           .attr("transform", "translate(" + r + "," + r + ")");    //move the center of the pie chart from 0, 0 to radius, radius
-	      //
-	      //   var arc = d3.arc()              //this will create <path> elements for us using arc data
-	      //       .outerRadius(r);
-	      //
-	      //   var pie = d3.pie()           //this will create arc data for us given a list of values
-	      //       .value(function(d) { return d.value; });    //we must tell it out to access the value of each element in our data array
-	      //
-	      //   var arcs = vis.selectAll("g.slice")     //this selects all <g> elements with class slice (there aren't any yet)
-	      //       .data(pie)                          //associate the generated pie data (an array of arcs, each having startAngle, endAngle and value properties)
-	      //       .enter()                            //this will create <g> elements for every "extra" data element that should be associated with a selection. The result is creating a <g> for every object in the data array
-	      //           .append("svg:g")                //create a group to hold each slice (we will have a <path> and a <text> element associated with each slice)
-	      //               .attr("class", "slice");    //allow us to style things in the slices (like text)
-	      //
-	      //       arcs.append("svg:path")
-	      //               .attr("fill", function(d, i) { return color(i); } ) //set the color for each slice to be chosen from the color function defined above
-	      //               .attr("d", arc);                                    //this creates the actual SVG path using the associated data (pie) with the arc drawing function
-	      //
-	      //       arcs.append("svg:text")                                     //add a label to each slice
-	      //               .attr("transform", function(d) {                    //set the label's origin to the center of the arc
-	      //               //we have to make sure to set these before calling arc.centroid
-	      //               d.innerRadius = 0;
-	      //               d.outerRadius = r;
-	      //               return "translate(" + arc.centroid(d) + ")";        //this gives us a pair of coordinates like [50, 50]
-	      //           })
-	      //           .attr("text-anchor", "middle")                          //center the text on it's origin
-	      //           .text(function(d, i) { console.log(data[i]); return data[i].label; });        //get the label from our original data array
-	      //
-	      //         };
 
 
 	  var create_handler_for = function(compose) {
-	    var clicked = false; // closed over by the click handler function
+	    var clicked = false; //
 	    var click_handler = function(event) {
 	      clicked = !clicked;
 	      console.log(clicked);
+
+	      // $(".Hq").mousedown(function() {
+	      //   console.log('are we here?');
+	      //   $(".Am.Al.editable.LW-avf").css('min-height', '0px');
+	      //   setTimeout(function(){
+	      //     $(".Am.Al.editable.LW-avf").css('min-height', '0px');
+	      //
+	      //   }, 500);
+	      // });
 	      if (clicked === true) {
 	        // step 1: get the compose text body
 	        var email_content = compose.body();
 	        // Step 2: Send it to my app
-	        $.post("https://localhost:8080/analyze",
+	        $.post("https://tonalyze.herokuapp.com/analyze",
 	        // wrapped the reportMaker that takes data and status so that it could also pass through compose
 	        { text: email_content }, function(data, status) {
-	          reportMaker(data, status, compose);
+	          // reportMaker(data, status, compose);
+	          // $(".Am.Al.editable.LW-avf").css('min-height', '0px');
+	          // step 3: call d3 functions
 	          make_emotion_array_for_d3(data, status, compose);
-	        }); // calling reportMaker function
+	          // make_social_array_for_d3(data, status, compose);
+	          // make_language_array_for_d3(data, status, compose);
+	        }); // calling these 3 functions
 	      }
 	      // Step 4: Click function that removes analysis
 	      else if (clicked === false){
 	        d3.selectAll(".tone_chart").remove();
+	        // myWindow.close(); // this is what I want to remove the window
 	      }
 	    };
 	    return click_handler;
@@ -316,11 +299,12 @@
 
 	  // Returns the html element (button) of the last composed email
 	  var make_button = function(compose, type) {
-	    // Make a custom click_handler function for the window that is stored in the "compose" variable
+	    // Makes a custom click_handler function for the window that is stored in the "compose" variable
 	    var handler = create_handler_for(compose);
 	    gmail.tools.add_compose_button(
 	    compose,'Tonalyze', handler, 'test_this' );
 	  };
+
 
 
 	  // Makes a button when a new compose window opens

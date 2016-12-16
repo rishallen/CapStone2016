@@ -4,7 +4,7 @@
 }
 
 .test_this {
-    background: linear-gradient(red, yellow, purple); /* Green */
+    background: rgb(42, 51, 83);
     border: none;
     color: white;
     padding: 16px 32px;
@@ -24,7 +24,8 @@
   color: grey;
 }
 
-/*.slice text {
-  font-size: 16pt;
-  font-family: Arial;
-}*/
+
+.Am.Al.editable.LW-avf {
+  min-height: 0px;
+
+}
